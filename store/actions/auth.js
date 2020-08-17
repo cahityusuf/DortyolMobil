@@ -22,7 +22,7 @@ export const authenticate = (userId, token, expiryTime) => {
 export const signup = (email, password) => {
   return async dispatch => {
     const response = await fetch(
-      'http://10.3.40.149:3000/api/auth/login',
+      'http://192.168.1.5:3000/api/auth/register',
       {
         method: 'POST',
         headers: {
@@ -63,9 +63,10 @@ export const signup = (email, password) => {
 };
 
 export const login = (email, password) => {
+
   return async dispatch => {
     const response = await fetch(
-      'http://10.3.40.149:3000/api/auth/login',
+      'http://192.168.1.5:3000/api/auth/login',
       {
         method: 'POST',
         headers: {
@@ -79,15 +80,17 @@ export const login = (email, password) => {
       }
     );
 
+
     if (!response.ok) {
+
       const errorResData = await response.json();
-      const errorId = errorResData.error.message;
-      let message = 'Something went wrong!';
-      if (errorId === 'EMAIL_NOT_FOUND') {
-        message = 'This email could not be found!';
-      } else if (errorId === 'INVALID_PASSWORD') {
-        message = 'This password is not valid!';
-      }
+      const message = errorResData.message;
+      // let message = 'Something went wrong!';
+      // if (errorId === 'EMAIL_NOT_FOUND') {
+      //   message = 'This email could not be found!';
+      // } else if (errorId === 'INVALID_PASSWORD') {
+      //   message = 'This password is not valid!';
+      // }
       throw new Error(message);
     }
 

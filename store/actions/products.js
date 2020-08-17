@@ -67,20 +67,20 @@ export const createProduct = (title, description, imageUrl, price) => {
   return async (dispatch, getState) => {
     // any async code you want!
     const token = getState().auth.token;
-    const userId = getState().auth.userId;
+    // const userId = getState().auth.data.email;
     const response = await fetch(
       `https://ng-prj-test.firebaseio.com/products.json?auth=${token}`,
       {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           title,
           description,
           imageUrl,
-          price,
-          ownerId: userId
+          price
         })
       }
     );
