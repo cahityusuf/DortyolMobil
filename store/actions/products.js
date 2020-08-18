@@ -6,14 +6,21 @@ export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 export const SET_PRODUCTS = 'SET_PRODUCTS';
 
 export const fetchProducts = () => {
+  const token = getState().auth.token;
+  console.log(token);
   return async (dispatch, getState) => {
     // any async code you want!
-    const userId = getState().auth.userId;
+    //const userId = getState().auth.userId;
     try {
       const response = await fetch(
-        'https://ng-prj-test.firebaseio.com/products.json'
+        'http://192.168.1.5:3000/api/product/getproducts',{
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        }
       );
-
+      console.log(response.json());
       if (!response.ok) {
         throw new Error('Something went wrong!');
       }
@@ -25,7 +32,7 @@ export const fetchProducts = () => {
         loadedProducts.push(
           new Product(
             key,
-            resData[key].ownerId,
+            resData[key].user,
             resData[key].title,
             resData[key].imageUrl,
             resData[key].description,
@@ -94,8 +101,8 @@ export const createProduct = (title, description, imageUrl, price) => {
         title,
         description,
         imageUrl,
-        price,
-        ownerId: userId
+        price
+        //user: userId Backend tarafında ekleniyor
       }
     });
   };
